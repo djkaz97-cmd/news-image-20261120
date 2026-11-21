@@ -162,8 +162,8 @@ rule(944, 3)
 d.text((40, 952), "ALSO TODAY:", font=font("arialbd.ttf", 24), fill=RED)
 t1 = "Italy general strike over wages · NYC moves to close Rikers jail"
 t2 = "EU troops drill in Poland for Ukraine · Fiona the hippo dies at Cincinnati Zoo"
-d.text((200, 952), t1, font=fit(t1, 784, 24, 17), fill=INK)
-d.text((200, 980), t2, font=fit(t2, 784, 22, 16, bold=False), fill=MUTED)
+d.text((218, 952), t1, font=fit(t1, 766, 24, 17), fill=INK)
+d.text((218, 980), t2, font=fit(t2, 766, 22, 16, bold=False), fill=MUTED)
 
 img.save("entry.png", optimize=True)
 print("entry.png written:", os.path.getsize("entry.png"), "bytes", img.size)
