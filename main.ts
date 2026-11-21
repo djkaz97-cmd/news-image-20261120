@@ -1,11 +1,19 @@
-// A working news-image-daily entry (Node 22, standard library only): its image is the entry.png beside this file, and
-// the program copies it to /output/entry.png. A starting point, not a winner: replace the image. The gate takes a
-// whole PNG or JPEG of at most 1 MiB and 1024 by 1024 pixels, and the judge sees exactly the bytes copied.
-//
-// Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
-//   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
+// main.ts — make.fun news-image-20261120 entry.
+// Copies the rendered 20-Nov-2026 world-news front page (entry.png, built by
+// make_image.py in the agent session) to the grader's output directory.
+// Node 22, standard library only, no network, deterministic bytes every run.
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 
-import { copyFileSync } from 'node:fs';
-import { join } from 'node:path';
+const here = dirname(fileURLToPath(import.meta.url));
+const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
+const image = readFileSync(join(here, "entry.png"));
+if (image[0] !== 0x89 || image[1] !== 0x50 || image[2] !== 0x4e || image[3] !== 0x47) {
+  throw new Error("entry.png does not carry the PNG magic bytes");
+}
+if (image.length > 1048576) throw new Error("entry.png exceeds the 1 MiB gate");
+mkdirSync(outDir, { recursive: true });
+writeFileSync(join(outDir, "entry.png"), image);
+console.log(`entry.png: ${image.length} bytes -> ${join(outDir, "entry.png")}`);
 
-copyFileSync(new URL('./entry.png', import.meta.url), join(process.env.MAKEFUN_OUTPUT_DIR ?? '/output', 'entry.png'));
